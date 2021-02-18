@@ -1,4 +1,4 @@
-# first
+# MyMaestry
 
 A new Flutter project.
 
