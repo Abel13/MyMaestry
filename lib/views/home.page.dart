@@ -1,13 +1,17 @@
+import 'package:first/store/app.store.dart';
 import 'package:first/widgets/champion-list.widget.dart';
 import 'package:first/widgets/role-list.widget.dart';
 import 'package:first/widgets/search-box.widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final store = Provider.of<AppStore>(context);
+
     return Scaffold(
       drawer: Drawer(
         child: Column(
@@ -15,10 +19,10 @@ class HomePage extends StatelessWidget {
             UserAccountsDrawerHeader(
               currentAccountPicture: ClipOval(
                 child: Image.network(
-                    'http://ddragon.leagueoflegends.com/cdn/11.3.1/img/profileicon/4863.png'),
+                    'http://ddragon.leagueoflegends.com/cdn/11.3.1/img/profileicon/${store.summoner.iconId}.png'),
                 // child: Image.asset("assets/Emblem_Bronze.png"),
               ),
-              accountName: Text('RodizioDeCoxinha'),
+              accountName: Text(store.summoner.name),
               accountEmail: Row(
                 children: [
                   Image.asset(

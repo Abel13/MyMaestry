@@ -1,13 +1,20 @@
+import 'package:first/api/http_summoner.dart';
+import 'package:first/controllers/login.controller.dart';
+import 'package:first/store/app.store.dart';
 import 'package:first/views/home.page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SigninPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-  String _summonerName;
 
   @override
   Widget build(BuildContext context) {
+    String _summonerName;
+    final store = Provider.of<AppStore>(context);
+    final controller = new LoginController(store);
+
     return Scaffold(
       // appBar: AppBar(),
       body: Center(
@@ -81,39 +88,27 @@ class SigninPage extends StatelessWidget {
                           },
                           onSaved: (input) => _summonerName = input,
                         ),
-                        // SizedBox(
-                        //   height: 10,
-                        // ),
-                        // TextFormField(
-                        //   decoration: InputDecoration(labelText: "Senha"),
-                        // ),
-                        // Container(
-                        //   height: 40,
-                        //   alignment: Alignment.centerRight,
-                        //   child: FlatButton(
-                        //     onPressed: () {},
-                        //     child: Text("Esqueci minha senha"),
-                        //   ),
-                        // ),
                         SizedBox(
                           height: 30,
                         ),
                         Container(
                           width: double.infinity,
                           decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(5),
-                              )),
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                          ),
                           // color: Theme.of(context).primaryColor,
                           child: FlatButton(
                             child: Text("BUSCAR"),
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState.validate()) {
                                 _formKey.currentState.save();
-                                print(_summonerName);
-
-                                Navigator.push(
+                                var result =
+                                    await getSummonerCredentials(_summonerName);
+                                controller.setSummoner(result);
+                                Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => HomePage(),
